@@ -1,5 +1,5 @@
 # Advanced Autonomous Research agent
 
 ## #####################
-## comming soon....
+## coming soon....
 ## #####################
