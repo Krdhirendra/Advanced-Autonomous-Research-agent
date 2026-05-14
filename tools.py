@@ -34,7 +34,9 @@ def tavily_search(searches:list, max_results:int) -> set:
         
         for res in response:
             links.add(res['url'])
-
+    # change it from link extractor to content extractor
+    # add the pdf extractor here 
+    # add the condition here so that even if content extracting of tavily fails the agent can use thee tools to extrcat content from link
     return links
 
 
@@ -58,4 +60,4 @@ def arxiv_search(queries:list) -> set:
     return extracted_papers
 
     
-    
+    # ADD the extractor tools for html and pdf
