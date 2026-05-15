@@ -2,3 +2,8 @@ langgraph
 langchain-core
 langchain-groq
 langchain-community
+pypdf
+bs4
+readability-lxml
+arxiv
+pymupdf
