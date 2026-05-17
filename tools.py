@@ -28,14 +28,15 @@ def tavily_search(searches:list, max_results:int=3) -> set:
 
     for search in searches:
         query = search['query']
-        tgt_domains = search.get('domains',[])
+        tgt_domains = search.get('target_domains',[])
+        exclude_domains = search.get('exclude_domains',[])
         
         if not tgt_domains:
             print(f'=> Executing Open WEB Search for {query}....')
             tavily_tool = TavilySearchResults(max_results=max_results, search_depth="advanced", )
         else:
             print(f"=> Executing Targeted search for {query} from {tgt_domains} ....")
-            tavily_tool = TavilySearchResults(max_results=max_results, search_depth="advanced", include_domains=tgt_domains)
+            tavily_tool = TavilySearchResults(max_results=max_results, search_depth="advanced", include_domains=tgt_domains,exclude_domains=exclude_domains)
         
         response = tavily_tool.invoke(query)
         
@@ -75,11 +76,14 @@ def extract_text(url:str):
         content_type = response.headers.get("content-Type","")
 
         if "application/pdf" in content_type or url.endswith(".pdf"):
-            return extract_pdf(response.content)
+            exracted_txt = extract_pdf(response.content)
         elif "text/html" in content_type:
-            return extract_html(response.content)
+            exracted_txt = extract_html(response.content)
         else:
-            return response.text
+            exracted_txt = response.text
+
+        return {'content':extract_text,
+              'url':url}
         
     except Exception as e:
         print(f"\n!!!!! ERROR at extract_text !!!!!\n{e}\n")
