@@ -82,8 +82,8 @@ def extract_text(url:str):
         else:
             exracted_txt = response.text
 
-        return {'content':extract_text,
-              'url':url}
+        return {'page_content':extract_text,
+                "metadata":{'url':url}}
         
     except Exception as e:
         print(f"\n!!!!! ERROR at extract_text !!!!!\n{e}\n")
