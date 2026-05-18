@@ -11,3 +11,5 @@ llama-index-core
 dotenv
 langchain-cohere
 langchain
+psycopg2-binary 
+langchain-postgres
