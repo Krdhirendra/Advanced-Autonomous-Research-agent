@@ -20,8 +20,8 @@ def load_env_variables(env_file=".env"):
     load_dotenv(env_file)
     print(f"=> Environment variables loaded from {env_file}")
 
-
-def tavily_search(searches:list, max_results:int=3) -> set:
+tavily_api = os.getenv('TAVILY_API_KEY')
+def tavily_search(searches:list, max_results:int=3) -> set | list:
     """Tavily search for aquiring information from internet"""
     print('=> Using Tavily to Search Internet for relevant information....\n')
     links = set()
@@ -43,32 +43,13 @@ def tavily_search(searches:list, max_results:int=3) -> set:
         for res in response:
             links.add(res['url'])
 
-    return links
+    return links, response
 
-
-def arxiv_search(queries:list) -> list:
-
-    retriever = ArxivRetriever(load_max_docs=2,get_full_documents=True)
-    extracted_papers = []
-
-    for query in queries:
-        print("=> Executing Arxiv search for Academic Papers....")
-        docs = retriever.invoke(query)
-
-        for doc in docs:
-            paper_data = {
-                "source": doc.metadata.get('Entry ID','Unknown ArXiv ID'),
-                "title": doc.metadata.get('Title', 'Unknown_title'),
-                "content":doc.page_content
-            }
-            extracted_papers.append(paper_data)
-
-    return extracted_papers
-
-    
+   
 
 # ADD the extractor tools for html and pdf
 def extract_text(url:str):
+    print(f'=> Extracting texts from the {url}....')
     header = {"User-Agent":"Mozilla/5.0"}
 
     try:
@@ -76,13 +57,13 @@ def extract_text(url:str):
         content_type = response.headers.get("content-Type","")
 
         if "application/pdf" in content_type or url.endswith(".pdf"):
-            exracted_txt = extract_pdf(response.content)
+            extracted_txt = extract_pdf(response.content)
         elif "text/html" in content_type:
-            exracted_txt = extract_html(response.content)
+            extracted_txt = extract_html(response.content)
         else:
-            exracted_txt = response.text
+            extracted_txt = response.text
 
-        return {'page_content':extract_text,
+        return {'page_content':extracted_txt,
                 "metadata":{'url':url}}
         
     except Exception as e:
@@ -91,6 +72,7 @@ def extract_text(url:str):
 
 
 def extract_pdf(binary_content):
+    print(f'=>extract_pdf in action....')
     try:
         reader = PdfReader(BytesIO(binary_content))
         text = []
@@ -113,6 +95,7 @@ def extract_pdf(binary_content):
 
 
 def extract_html(html_content):
+    print(f'=>extract_html in action....')
     soup = BeautifulSoup(html_content, "html.parser")
     
     main_content = soup.find(id="bodyContent") or soup.find("main") or soup.find("article") or soup
