@@ -2,7 +2,6 @@ import os
 import numpy as np
 from dotenv import load_dotenv
 from typing import List
-from langchain_cohere import CohereEmbeddings
 from langchain_core.documents import Document as LangChainDoc
 from langchain_classic.retrievers import ParentDocumentRetriever
 from langchain_text_splitters import RecursiveCharacterTextSplitter
@@ -10,23 +9,15 @@ from langchain_community.docstore.in_memory import InMemoryDocstore
 from llama_index.core import Document as LlamaIndexDoc
 from llama_index.core.node_parser import SemanticSplitterNodeParser, SentenceSplitter
 from langchain_postgres.vectorstores import PGVector
+from langchain_cohere import CohereEmbeddings
 
 
-load_dotenv('.env')
-COHERE_API_KEY = os.environ['COHERE_API_KEY']
-
-"""Our Embedding Model"""
-try:
-    cohere_embed = CohereEmbeddings(cohere_api_key=COHERE_API_KEY,
-                                    model='embed-english-v3.0')
-except Exception as e:
-    print(f"Error Loading the Embedding model\nError: {e}")
 
 
 # Wrapper class
 """since the ParentDocumentRetriever expects a child splitter that implements a .split_documents() method. LlamaIndex uses a .get_nodes_from_documents() method. SO a AttributeError will arise if SemanticSplitterNodeParser used directly into ParentDocumentRetriever"""
 
-__all__ = ['chunks', 'EmbeddingManager']
+__all__ = ['chunks']
 
 class Llama_SemanticSplitterWrapper(RecursiveCharacterTextSplitter):
     """Wraps LlamaIndex's semantic splitter to work with LangChain's retriever"""
@@ -52,11 +43,12 @@ class Llama_SemanticSplitterWrapper(RecursiveCharacterTextSplitter):
 
 class chunks:
 
-    def __init__(self, vector_store, embed_model:CohereEmbeddings=cohere_embed):
+    def __init__(self, vector_store, embed_model:CohereEmbeddings):
         self.embed_model = embed_model
         self.vector_store = vector_store
 
-    def split_texts(self, texts:str, buffer_size:int=1, breakpoint_percentile_threshold=80):
+    def split_texts(self, documents:List[LangChainDoc], buffer_size:int=1, breakpoint_percentile_threshold=80):
+        print(f'=> chunks split_texts in action....\n')
 
         parent_splitter = RecursiveCharacterTextSplitter(chunk_size=1024, chunk_overlap=200)
 
@@ -67,7 +59,7 @@ class chunks:
 
         child_splitter = Llama_SemanticSplitterWrapper(llama_splitter=llama_semantic_parser)
 
-        vector_store = vector_store
+        vector_store = self.vector_store
         doc_store = InMemoryDocstore()
 
         retriver = ParentDocumentRetriever(
