@@ -1,31 +1,62 @@
 from langchain_community.vectorstores.pgvector import PGVector
 from langchain_core.documents import Document
 import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+
+def _strip_surrounding_quotes(value: str | None) -> str | None:
+	if value is None:
+		return None
+	value = value.strip()
+	if (value.startswith('"') and value.endswith('"')) or (value.startswith("'") and value.endswith("'")):
+		return value[1:-1]
+	return value
 
 
 class RDSVectorStore:
-    def __init__(self, collection_name: str = "research_papers"):
-        self.collection_name = collection_name
-        
-        # AWS RDS Connection String
-        self.connection_string = os.environ.get("AWS_RDS_URL") 
-        self.vectorstore = None
+	def __init__(self, collection_name: str = "research_papers"):
+		self.collection_name = collection_name
+		# Read and normalize the connection string from environment
+		raw = os.getenv("AWS_RDS_URI")
+		self.connection_string = _strip_surrounding_quotes(raw)
+		self.vectorstore = None
 
-    def initialize_store(self, embedding_manager):
-        """Connects to AWS RDS and initializes the pgvector table"""
-        print("Connecting to AWS RDS pgvector...")
-        
-        self.vectorstore = PGVector(
-            connection_string=self.connection_string,
-            embedding_function=embedding_manager, 
-            collection_name=self.collection_name,
-            use_jsonb=True # Stores metadata efficiently
-        )
+	def initialize_store(self, embedding_manager):
+		"""Connects to AWS RDS pgvector via SQLAlchemy URL.
 
-    def add_documents(self, documents: list[Document]):
-        """Adds LangChain documents directly to the AWS database"""
-        if not self.vectorstore:
-            raise ValueError("Store not initialized. Call initialize_store first.")
-            
-        print(f"Pushing {len(documents)} chunks to AWS RDS...")
-        self.vectorstore.add_documents(documents)
+		Raises a helpful error if the environment variable is missing or contains
+		placeholder brackets (e.g. [user]) which are invalid in a real URL.
+		"""
+		if not self.connection_string:
+			raise ValueError(
+				"AWS_RDS_URI is not set. Add a valid SQLAlchemy URL to your .env, e.g.\n"
+				"AWS_RDS_URI=postgresql+psycopg2://user:pass@host:5432/database"
+			)
+
+		if "[" in self.connection_string or "]" in self.connection_string:
+			raise ValueError(
+				"AWS_RDS_URI contains bracket placeholders like [user] or [pass]. "
+				"Remove the brackets and put the real credentials in the URL."
+			)
+
+		print("Connecting to AWS RDS pgvector...")
+		self.vectorstore = PGVector(
+			connection_string=self.connection_string,
+			embedding_function=embedding_manager,
+			collection_name=self.collection_name,
+			use_jsonb=True,
+		)
+
+	def add_documents(self, documents: list[Document]):
+		"""Adds LangChain documents directly to the AWS database"""
+		if not self.vectorstore:
+			raise ValueError("Store not initialized. Call initialize_store first.")
+
+		print(f"Pushing {len(documents)} chunks to AWS RDS...")
+		self.vectorstore.add_documents(documents)
+
+# load_dotenv()
+# a = os.getenv('AWS_RDS_URI')
+# print(a)
