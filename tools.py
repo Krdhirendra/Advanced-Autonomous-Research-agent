@@ -20,6 +20,7 @@ def load_env_variables(env_file=".env"):
     load_dotenv(env_file)
     print(f"=> Environment variables loaded from {env_file}")
 
+
 tavily_api = os.getenv('TAVILY_API_KEY')
 def tavily_search(searches:list, max_results:int=3) -> set | list:
     """Tavily search for aquiring information from internet"""
