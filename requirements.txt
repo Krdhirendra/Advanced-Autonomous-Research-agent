@@ -13,3 +13,6 @@ langchain-cohere
 langchain
 psycopg2-binary 
 langchain-postgres
+llama-index-embeddings-langchain
+langchain-storage
+rank_bm25
