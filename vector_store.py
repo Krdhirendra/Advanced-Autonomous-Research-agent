@@ -6,28 +6,28 @@ from dotenv import load_dotenv
 load_dotenv()
 
 
-def _strip_surrounding_quotes(value: str | None) -> str | None:
-	if value is None:
-		return None
-	value = value.strip()
-	if (value.startswith('"') and value.endswith('"')) or (value.startswith("'") and value.endswith("'")):
-		return value[1:-1]
-	return value
+# def _strip_surrounding_quotes(value: str | None) -> str | None:
+# 	if value is None:
+# 		return None
+# 	value = value.strip()
+# 	if (value.startswith('"') and value.endswith('"')) or (value.startswith("'") and value.endswith("'")):
+# 		return value[1:-1]
+# 	return value
 
 
 class RDSVectorStore:
 	def __init__(self, collection_name: str = "research_papers"):
 		self.collection_name = collection_name
 		# Read and normalize the connection string from environment
-		raw = os.getenv("AWS_RDS_URI")
-		self.connection_string = _strip_surrounding_quotes(raw)
+		# raw = os.getenv("AWS_RDS_URI")
+		# self.connection_string = _strip_surrounding_quotes(raw)
+		self.connection_string = os.getenv("AWS_RDS_URI")
 		self.vectorstore = None
 
 	def initialize_store(self, embedding_manager):
 		"""Connects to AWS RDS pgvector via SQLAlchemy URL.
 
-		Raises a helpful error if the environment variable is missing or contains
-		placeholder brackets (e.g. [user]) which are invalid in a real URL.
+		Raises a helpful error if the environment variable is missing.
 		"""
 		if not self.connection_string:
 			raise ValueError(
@@ -35,11 +35,6 @@ class RDSVectorStore:
 				"AWS_RDS_URI=postgresql+psycopg2://user:pass@host:5432/database"
 			)
 
-		if "[" in self.connection_string or "]" in self.connection_string:
-			raise ValueError(
-				"AWS_RDS_URI contains bracket placeholders like [user] or [pass]. "
-				"Remove the brackets and put the real credentials in the URL."
-			)
 
 		print("Connecting to AWS RDS pgvector...")
 		self.vectorstore = PGVector(
