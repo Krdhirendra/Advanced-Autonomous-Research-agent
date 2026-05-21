@@ -4,7 +4,6 @@ langchain-groq
 langchain-community
 pypdf
 bs4
-cohere
 readability-lxml
 pymupdf
 llama-index-core
