@@ -1,6 +1,6 @@
 langgraph
 langchain-core
-langchain-groq
+# langchain-groq
 langchain-community
 pypdf
 bs4
@@ -15,3 +15,5 @@ langchain-postgres
 llama-index-embeddings-langchain
 langchain-storage
 rank_bm25
+langchain-huggingface
+langchain-tavily
