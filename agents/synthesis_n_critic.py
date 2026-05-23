@@ -3,7 +3,7 @@ from typing import List, Literal
 from langchain_core.messages import HumanMessage, SystemMessage
 from pydantic import BaseModel, Field
 
-from A_ARA.agents.prompts import *
+from agents.prompts import *
 from retriever import advanced_hybrid_retrieval
 
 

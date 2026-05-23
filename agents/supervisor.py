@@ -5,6 +5,7 @@ from pydantic import BaseModel, Field
 from agents.prompts import *
 
 
+
 # 1. Define the precise JSON blueprint using Pydantic
 class SingleSearchStrategy(BaseModel):
     query: str = Field(description="The optimized, multi-faceted search query string")
