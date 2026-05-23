@@ -6,21 +6,12 @@ from dotenv import load_dotenv
 load_dotenv()
 
 
-# def _strip_surrounding_quotes(value: str | None) -> str | None:
-# 	if value is None:
-# 		return None
-# 	value = value.strip()
-# 	if (value.startswith('"') and value.endswith('"')) or (value.startswith("'") and value.endswith("'")):
-# 		return value[1:-1]
-# 	return value
 
 
 class RDSVectorStore:
 	def __init__(self, collection_name: str = "research_papers"):
 		self.collection_name = collection_name
 		# Read and normalize the connection string from environment
-		# raw = os.getenv("AWS_RDS_URI")
-		# self.connection_string = _strip_surrounding_quotes(raw)
 		self.connection_string = os.getenv("AWS_RDS_URI")
 		self.vectorstore = None
 
@@ -50,8 +41,4 @@ class RDSVectorStore:
 			raise ValueError("Store not initialized. Call initialize_store first.")
 
 		print(f"Pushing {len(documents)} chunks to AWS RDS...")
-		self.vectorstore.add_documents(documents)
-
-# load_dotenv()
-# a = os.getenv('AWS_RDS_URI')
-# print(a)
+		self.vectorstore.add_documents(documents,chunk_size=1000)
