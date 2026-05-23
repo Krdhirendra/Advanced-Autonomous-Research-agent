@@ -9,7 +9,7 @@ from typing import List, Dict, Annotated, TypedDict, Any, Literal
 from langchain_core.messages import HumanMessage, SystemMessage
 from langchain_core.documents import Document as LangChainDoc
 from langchain_google_genai import ChatGoogleGenerativeAI
-from langchain_community.embeddings import HuggingFaceEmbeddings
+from langchain_huggingface.embeddings import HuggingFaceEmbeddings
 from pydantic import BaseModel, Field
 from markdown_pdf import MarkdownPdf, Section
 from pathlib import Path
@@ -60,7 +60,7 @@ class GlobalState(TypedDict):
     iteration_count: int
     max_iterations: int
 
-research_query = input("-> Please Enter your Research topic.\nTo get an better result please specify the topic.\n")
+research_query = input("-> Please Enter your Research topic.\n\tTo get an better result please specify the topic.\n\t=>~")
 
 def routing_logic(state: GlobalState) -> str:
     """Decides if the graph should loop back or finish."""
@@ -155,7 +155,7 @@ pdf.add_section(Section(final_report))
 base_dir = Path.cwd().parent
 report_folder = base_dir / "reports"
 report_folder.mkdir(parents=True, exist_ok=True)
-filename = "my_report2.pdf"
+filename = "my_report4.pdf"
 file_path = report_folder / filename
 pdf.save(str(file_path))
 print(f"Report saved successfully at: {file_path}")
