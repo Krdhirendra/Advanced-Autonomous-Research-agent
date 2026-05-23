@@ -17,3 +17,5 @@ langchain-storage
 rank_bm25
 langchain-huggingface
 langchain-tavily
+fastapi
+univorn
