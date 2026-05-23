@@ -7,7 +7,6 @@ from bs4 import BeautifulSoup
 from readability import Document
 from dotenv import load_dotenv
 from langchain_community.retrievers import ArxivRetriever
-# from langchain_community.tools.tavily_search import TavilySearchResults
 from langchain_tavily import TavilySearch
 
 
@@ -48,7 +47,7 @@ def tavily_search(searches:list, max_results:int=3) -> set | list:
 
    
 
-# ADD the extractor tools for html and pdf
+
 def extract_text(url:str):
     print(f'=> Extracting texts from the {url}....')
     header = {"User-Agent":"Mozilla/5.0"}
