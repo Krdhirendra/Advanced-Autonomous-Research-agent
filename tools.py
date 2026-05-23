@@ -7,8 +7,8 @@ from bs4 import BeautifulSoup
 from readability import Document
 from dotenv import load_dotenv
 from langchain_community.retrievers import ArxivRetriever
-from langchain_community.tools.tavily_search import TavilySearchResults
-
+# from langchain_community.tools.tavily_search import TavilySearchResults
+from langchain_tavily import TavilySearch
 
 
 def load_env_variables(env_file=".env"):
@@ -34,14 +34,14 @@ def tavily_search(searches:list, max_results:int=3) -> set | list:
         
         if not tgt_domains:
             print(f'=> Executing Open WEB Search for {query}....')
-            tavily_tool = TavilySearchResults(max_results=max_results, search_depth="advanced", )
+            tavily_tool = TavilySearch(max_results=max_results, search_depth="advanced", )
         else:
             print(f"=> Executing Targeted search for {query} from {tgt_domains} ....")
-            tavily_tool = TavilySearchResults(max_results=max_results, search_depth="advanced", include_domains=tgt_domains,exclude_domains=exclude_domains)
+            tavily_tool = TavilySearch(max_results=max_results, search_depth="advanced", include_domains=tgt_domains,exclude_domains=exclude_domains)
         
         response = tavily_tool.invoke(query)
         
-        for res in response:
+        for res in response['results']:
             links.add(res['url'])
 
     return links, response
