@@ -1,9 +1,6 @@
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_classic.retrievers import ParentDocumentRetriever
 from langchain_core.stores import InMemoryStore
-from llama_index.embeddings.huggingface import HuggingFaceEmbedding
-from llama_index.embeddings.langchain import LangchainEmbedding
-from langchain_core.documents import Document
 from typing import List
 
 class chunks:
