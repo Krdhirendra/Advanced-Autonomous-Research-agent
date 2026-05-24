@@ -1,21 +1,20 @@
 langgraph
 langchain-core
-# langchain-groq
 langchain-community
 pypdf
 bs4
 readability-lxml
 pymupdf
-llama-index-core
 dotenv
 langchain-cohere
 langchain
-psycopg2-binary 
-langchain-postgres
-llama-index-embeddings-langchain
-langchain-storage
+psycopg2-binary
 rank_bm25
 langchain-huggingface
 langchain-tavily
 fastapi
-univorn
+uvicorn
+pgvector
+markdown_pdf
+langchain-google-genai
+sentence-transformers
