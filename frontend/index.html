@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AARA | Advanced Autonomous Research Agent</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <header class="topbar">
+        <button class="sidebar-toggle" type="button" aria-label="Open navigation menu" onclick="toggleSidebar()">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <div class="logo-area">
+            <i class="fa-solid fa-layer-group logo-icon"></i>
+            <span class="brand-name">AARA:</span>
+            <span class="brand-sub">Advanced Autonomous Research Agent</span>
+        </div>
+        <div class="status-indicator">
+            <span class="pulse-dot"></span> System Online
+        </div>
+    </header>
+
+    <div class="dashboard-grid">
+        
+        <aside class="left-panel">
+            <div class="panel-header">Workspaces</div>
+            <nav class="nav-menu">
+                <button class="nav-btn active" onclick="switchTab('agent-view', this)">
+                    <i class="fa-solid fa-terminal"></i> Agent Interface
+                </button>
+                <button class="nav-btn" onclick="switchTab('arch-view', this)">
+                    <i class="fa-solid fa-project-diagram"></i> Architecture
+                </button>
+            </nav>
+            
+            <div class="panel-header" style="margin-top: 30px;">Agent Status</div>
+            <div class="status-box">
+                <div class="status-title">IDLE</div>
+                <div class="status-desc">Awaiting research directive.</div>
+            </div>
+        </aside>
+
+        <main class="center-panel">
+            
+            <div id="agent-view" class="view-content active-view">
+                <div class="query-section panel-card">
+                    <div class="card-header">
+                        <i class="fa-solid fa-bolt"></i> Initialize Directive
+                    </div>
+                    <textarea id="query-input" placeholder="Enter research query (e.g., Analyze the thermal mass properties of CSEB vs fired clay bricks...)"></textarea>
+                    <p class="query-helper">Please specify the research parameters for better results.</p>
+                    <p id="research-progress" class="research-progress" style="display: none;">Research in progress and may take some time.... please wait</p>
+                    <div class="action-row">
+                        <button id="start-btn" class="primary-btn" onclick="startResearch()">
+                            <i class="fa-solid fa-play"></i> Execute
+                        </button>
+                    </div>
+                </div>
+                <div class="results-section panel-card" id="results-container" style="display: none; flex-direction: column;">
+                    <div class="card-header" style="justify-content: space-between;">
+                        <div id="results-title"><i class="fa-solid fa-file-pdf"></i> Synthesis Output</div>
+                        <a id="download-btn" href="#" download class="primary-btn" style="display: none; padding: 6px 12px; font-size: 12px; text-decoration: none;">
+                            <i class="fa-solid fa-download"></i> Download PDF
+                        </a>
+                    </div>
+                    
+                    <div id="text-viewer" class="markdown-content" style="display: none; flex-grow: 1;"></div>
+
+                    <div id="pdf-viewer-container" class="pdf-container" style="display: none; background-color: #525659;">
+                        <iframe id="pdf-viewer" src="" width="100%" height="100%" style="border: none;"></iframe>
+                    </div>
+                </div>
+
+                
+            </div>
+
+            <div id="arch-view" class="view-content" style="display: none;">
+                <div class="panel-card" style="height: 100%;">
+                    <div class="card-header">
+                        <i class="fa-solid fa-network-wired"></i> LangGraph Topology
+                    </div>
+                    <div class="diagram">
+                            <!-- <i class="fa-solid fa-sitemap" style="font-size: 3rem; margin-bottom: 1rem; color: var(--border);"></i> -->
+                            <!-- <p>System topology visualization goes here.</p> -->
+                             <picture class="diagram-container">
+                                <img src="mermaid-diagram-2026-05-14-194053.png">
+                             </picture>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+
+        <aside class="right-panel panel-card">
+            <div class="card-header">
+                <i class="fa-solid fa-code"></i> Live Console
+                <i class="fa-solid fa-ellipsis-vertical" style="float: right; color: var(--text-muted); cursor: pointer;"></i>
+            </div>
+            <div class="terminal-feed" id="terminal-output">
+                <div class="log-line sys-log">[AARA_CORE] LangGraph environment initialized.</div>
+                <div class="log-line sys-log">[AARA_CORE] Vector store connected.</div>
+                <div class="log-line">[IDLE] Listening for inputs...</div>
+            </div>
+        </aside>
+
+    </div>
+    <footer class="topbar">
+        <div class="logo-area">
+            <!-- <i class="fa-solid fa-layer-group logo-icon"></i> -->
+            <!-- <span class="brand-name"></span> -->
+            <span class="brand-sub">© Created by Dhirendra</span>
+        </div>
+        <div class="social-links">
+            <a class="social-link" href="https://github.com/Krdhirendra/Advanced-Autonomous-Research-agent" target="_blank" rel="noopener noreferrer" title="GitHub">
+                <i class="fa-brands fa-github"></i>
+            </a>
+            <a class="social-link" href="https://linkedin.com" target="_blank" rel="noopener noreferrer" title="LinkedIn">
+                <i class="fa-brands fa-linkedin"></i>
+            </a>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
