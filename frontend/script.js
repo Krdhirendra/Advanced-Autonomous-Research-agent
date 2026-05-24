@@ -48,99 +48,6 @@ function addLog(message, type = 'normal') {
     terminal.scrollTop = terminal.scrollHeight;
 }
 
-// // Main API Call
-// async function startResearch() {
-//     const query = document.getElementById('query-input').value.trim();
-//     if (!query) return;
-
-//     const btn = document.getElementById('start-btn');
-//     const resultsContainer = document.getElementById('results-container');
-//     const pdfViewer = document.getElementById('pdf-viewer');
-//     const pdfContainer = document.getElementById('pdf-viewer-container');
-//     const textViewer = document.getElementById('text-viewer');
-//     const downloadBtn = document.getElementById('download-btn');
-//     const resultsTitle = document.getElementById('results-title');
-
-//     // UI Reset
-//     btn.disabled = true;
-//     btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Processing';
-//     resultsContainer.style.display = 'none';
-//     pdfViewer.src = ''; 
-    
-//     setAgentStatus('RUNNING', 'Executing research loop...', 'var(--accent-blue)');
-//     addLog(`[USER_INPUT] ${query}`);
-//     addLog("[GATEKEEPER] Analyzing intent vector...", "system");
-
-//     // We store the timeouts in an array so we can cancel them if the response is instant
-//     let logTimeouts = [];
-//     logTimeouts.push(setTimeout(() => addLog("[ROUTER] Passing to Supervisor Agent."), 2000));
-//     logTimeouts.push(setTimeout(() => addLog("[SUPERVISOR] Generating multi-faceted search query."), 4000));
-//     logTimeouts.push(setTimeout(() => addLog("[INGESTION] Searching Tavily and scraping payloads..."), 7000));
-//     logTimeouts.push(setTimeout(() => addLog("[CHUNKER] Processing valid documents.", "system"), 12000));
-//     logTimeouts.push(setTimeout(() => addLog("[AWS_RDS] Uploading vectors (batch mode)...", "system"), 15000));
-//     logTimeouts.push(setTimeout(() => addLog("[SYNTHESIS] Drafting final context report..."), 22000));
-//     logTimeouts.push(setTimeout(() => addLog("[PDF_RENDER] Compiling Markdown to PDF format..."), 30000));
-
-//     try {
-//         // MAKE SURE THIS IS YOUR HUGGING FACE URL
-//         const BACKEND_URL = "https://player12026-aara-backend.hf.space/api/research"; 
-
-//         const response = await fetch(BACKEND_URL, {
-//             method: 'POST',
-//             headers: { 'Content-Type': 'application/json' },
-//             body: JSON.stringify({ query: query })
-//         });
-
-//         if (!response.ok) throw new Error(`HTTP Error: ${response.status}`);
-
-//         const data = await response.json();
-
-//         // 1. CLEAR ALL PENDING FAKE LOGS! The response is here!
-//         logTimeouts.forEach(clearTimeout);
-
-//         // 2. SHOW THE RESULTS BOX
-//         resultsContainer.style.display = 'flex';
-
-//         // 3. CHECK THE RESPONSE TYPE
-//         if (data.response_type === "text") {
-//             // It was just a chat! Show text, hide PDF.
-//             resultsTitle.innerHTML = '<i class="fa-solid fa-comment"></i> Agent Response';
-//             textViewer.textContent = data.content;
-//             textViewer.style.display = 'block';
-//             pdfContainer.style.display = 'none';
-//             downloadBtn.style.display = 'none';
-            
-//             addLog("[GATEKEEPER] Bypass successful. Instant response delivered.", "system");
-
-//         } else if (data.response_type === "pdf") {
-//             // It was deep research! Show PDF, hide text.
-//             resultsTitle.innerHTML = '<i class="fa-solid fa-file-pdf"></i> Synthesis Output';
-            
-//             // MAKE SURE THIS MATCHES YOUR HUGGING FACE BASE URL
-//             const backendHost = "https://player12026-aara-backend.hf.space";
-//             const fullPdfUrl = backendHost + data.pdf_url;
-            
-//             pdfViewer.src = fullPdfUrl;
-//             downloadBtn.href = fullPdfUrl;
-            
-//             textViewer.style.display = 'none';
-//             pdfContainer.style.display = 'block';
-//             downloadBtn.style.display = 'inline-block';
-            
-//             addLog("[SYSTEM] Operation complete. PDF generated.", "system");
-//         }
-
-//         setAgentStatus('COMPLETE', 'Awaiting next command.', 'var(--term-green)');
-
-//     } catch (error) {
-//         setAgentStatus('ERROR', 'Pipeline failure.', 'var(--term-error)');
-//         addLog(`[FETCH_ERROR] Ensure FastAPI backend is running.`, "error");
-//         console.error(error);
-//     } finally {
-//         btn.disabled = false;
-//         btn.innerHTML = '<i class="fa-solid fa-play"></i> Execute';
-//     }
-// }
 
 async function startResearch() {
     const query = document.getElementById('query-input').value.trim();
@@ -209,6 +116,9 @@ async function startResearch() {
                         textViewer.style.display = 'block';
                         pdfContainer.style.display = 'none';
                         downloadBtn.style.display = 'none';
+
+                        addLog(`[SYSTEM] Bypass successful. Processed in ${data.time}s.`, "system");
+
                     } else if (data.response_type === "pdf") {
                         resultsTitle.innerHTML = '<i class="fa-solid fa-file-pdf"></i> Synthesis Output';
                         const backendHost = "https://player12026-aara-backend.hf.space";
@@ -220,7 +130,9 @@ async function startResearch() {
                         textViewer.style.display = 'none';
                         pdfContainer.style.display = 'block';
                         downloadBtn.style.display = 'inline-block';
+                        addLog(`[SYSTEM] Operation complete. PDF compiled in ${data.time}s.`, "system");
                     }
+                    setAgentStatus('COMPLETE', `Research synthesized in ${data.time} seconds.`, 'var(--term-green)');
                     setAgentStatus('COMPLETE', 'Awaiting next command.', 'var(--term-green)');
                 }
             }

@@ -10,6 +10,7 @@ import json
 from fastapi.responses import StreamingResponse
 # # Import your compiled graph
 from orchestrator_1 import app as langgraph_app
+import time
 
 app = FastAPI()
 
@@ -39,6 +40,7 @@ async def generate_research(request: ResearchRequest):
     print(f"Received query from frontend: {request.query}")
     
     async def event_stream():
+        start_time = time.time()
         initial_state = {
             "original_query": request.query,
             "search_queries": {},
@@ -54,7 +56,6 @@ async def generate_research(request: ResearchRequest):
         }
         
         # 1. STREAM REAL-TIME LOGS
-        # Instead of invoke(), we stream(). This yields an event every time a node finishes.
         final_state = initial_state
         for event in langgraph_app.stream(initial_state):
             for node_name, state_update in event.items():
@@ -64,7 +65,9 @@ async def generate_research(request: ResearchRequest):
                 
                 # Keep tracking the state so we have the final output at the end
                 final_state.update(state_update)
-
+        
+        end_time = time.time()
+        execution_time = round(end_time - start_time, 2)
         # 2. FINALIZE THE REPORT
         final_report = final_state.get("draft_report", "")
         query_type = final_state.get("query_type", "deep_research")
@@ -73,7 +76,8 @@ async def generate_research(request: ResearchRequest):
             yield json.dumps({
                 "type": "result", 
                 "response_type": "text", 
-                "content": final_report
+                "content": final_report,
+                "time": execution_time
             }) + "\n"
         else:
             filename = f"AARA_Report_{uuid.uuid4().hex[:6]}.pdf"
@@ -86,7 +90,8 @@ async def generate_research(request: ResearchRequest):
             yield json.dumps({
                 "type": "result", 
                 "response_type": "pdf", 
-                "pdf_url": f"/reports/{filename}"
+                "pdf_url": f"/reports/{filename}",
+                "time": execution_time
             }) + "\n"
 
     # Return the stream with the specific NDJSON media type
