@@ -72,9 +72,12 @@ textarea { width: 100%; height: 100px; background-color: transparent; border: no
 .pdf-container { flex: 1 1 auto; min-height: 70vh; }
 
 /* Architecture View */
-.diagram-container { width: 900px; height: auto;}
-.diagram-container { width: 100%; max-width: 900px; height: auto; display: block; }
-.diagram-container img { width: 100%; height: auto; display: block; }
+/* .view-content { min-height: 0; } */
+/* .view-content#arch-view { height: 100%; } */
+.view-content#arch-view > .panel-card { height: 100%; min-height: 0; }
+.diagram { flex: 1 1 auto; min-height: 0; padding: 16px; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+.diagram-container { width: 100%; max-width: 100%; max-height: 100%; display: flex; align-items: center; justify-content: center; }
+.diagram-container img { width: 100%; max-width: 100vh; max-height: auto; height: auto; object-fit: contain; display: block; }
 /* .diagram-placeholder { text-align: center; color: var(--text-muted); font-size: 14px; } */
 
 /* --- RIGHT PANEL (CONSOLE) --- */
@@ -100,8 +103,9 @@ textarea { width: 100%; height: 100px; background-color: transparent; border: no
     .right-panel { order: 3; min-height: 220px; }
     .query-section, .results-section, .right-panel { width: 100%; }
     .pdf-container { min-height: 42vh; }
-    .diagram-container { max-width: 100%; }
     .diagram { overflow: auto; }
+    .diagram-container { width: 100%; max-width: 100vh; }
+    .diagram-container img { max-height: 58vh; }
 }
 
 @media (max-width: 560px) {
@@ -111,4 +115,5 @@ textarea { width: 100%; height: 100px; background-color: transparent; border: no
     .query-helper, .research-progress { font-size: 11px; }
     .pdf-container { min-height: 48vh; }
     .terminal-feed { max-height: 34vh; }
+    .diagram-container img { max-height: 50vh; }
 }
