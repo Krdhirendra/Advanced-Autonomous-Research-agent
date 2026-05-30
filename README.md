@@ -29,7 +29,7 @@
 
 ---
 
-## 🎯 Overview
+## <a name="overview"></a>🎯 Overview
 
 AARA is a sophisticated Advanced autonomous research system powered by a **multi-agent architecture** that intelligently decomposes research queries, searches the web, ingests content, synthesizes findings, and generates peer-reviewed quality reports. The system uses **advanced RAG techniques** with hybrid retrieval, iterative refinement, and self-critique mechanisms to ensure research quality.
 
@@ -42,14 +42,14 @@ AARA is a sophisticated Advanced autonomous research system powered by a **multi
 
 ---
 
-## 🏗️ Architecture
+## <a name="Architecture"></a>🏗️ Architecture
 
 ### System Topology
 ![alt text](architecture.png)
 
 ---
 
-## ✨ Key Features
+## <a name="key-features"></a>✨ Key Features
 
 ### 🧠 Intelligent Agent Orchestration
 - **Intent Classification:** Gatekeeper routes queries with semantic understanding
@@ -80,7 +80,7 @@ AARA is a sophisticated Advanced autonomous research system powered by a **multi
 
 ---
 
-## 🛠️ Tech Stack
+## <a name="tech-stack"></a>🛠️ Tech Stack
 
 | Component | Technology | Purpose |
 |-----------|-----------|---------|
@@ -99,7 +99,7 @@ AARA is a sophisticated Advanced autonomous research system powered by a **multi
 
 ---
 
-## 📦 Prerequisites
+## <a name="prerequisites"></a>📦 Prerequisites
 
 ### System Requirements
 - **Python:** 3.10+
@@ -114,7 +114,7 @@ AARA is a sophisticated Advanced autonomous research system powered by a **multi
 
 ---
 
-## 🚀 Setup & Installation
+## <a name="setup--installation"></a>🚀 Setup & Installation
 
 ### 1. Clone Repository
 ```bash
@@ -169,7 +169,7 @@ uvicorn server:app --reload --host 0.0.0.0 --port 8000
 
 ---
 
-## ⚙️ Configuration
+## <a name="configuration"></a>⚙️ Configuration
 
 ### Environment Variables Reference
 
@@ -211,7 +211,7 @@ EMBEDDING_DEVICE = "cuda"   # Use GPU if available
 
 ---
 
-## 📂 Project Structure
+## <a name="project-structure"></a>📂 Project Structure
 
 ```
 A_ARA/
@@ -246,7 +246,7 @@ A_ARA/
 
 ---
 
-## 🔌 API Reference
+## <a name="api-reference"></a>🔌 API Reference
 
 ### Base URL
 ```
@@ -284,7 +284,7 @@ data: {"type": "complete", "report_url": "/reports/AARA_Report_12345.pdf"}
 
 ---
 
-## 🔄 Agent Workflow Details
+## <a name="agent-workflow-details"></a>🔄 Agent Workflow Details
 
 ### Phase 1: Gatekeeper (Intent Classification)
 
@@ -338,7 +338,7 @@ For each search query:
 
 ---
 
-## 👨‍💻 Development
+## <a name="development"></a>👨‍💻 Development
 
 ### Running in Development Mode
 
@@ -387,7 +387,7 @@ print(f"Current state: {json.dumps(state, indent=2)}")
 
 ---
 
-## 🐳 Deployment
+## <a name="deployment"></a>🐳 Deployment
 
 ### Docker Build & Run
 
@@ -426,7 +426,7 @@ vercel deploy --prod
 
 ---
 
-## 🤝 Contributing
+## <a name="contributing"></a>🤝 Contributing
 
 1. **Fork** the repository
 2. **Create** a feature branch: `git checkout -b feature/my-feature`
