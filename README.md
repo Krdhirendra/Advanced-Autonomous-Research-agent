@@ -46,63 +46,6 @@ AARA is a sophisticated Advanced autonomous research system powered by a **multi
 
 ### System Topology
 ![alt text](architecture.png)
-```
-┌─────────────────────────────────────────────────────────────┐
-│                   Frontend (Vercel)                         │
-│           Reactive Zero-Dependency UI                       │
-│      Live Execution Telemetry (WebSocket Stream)            │
-└──────────────────────┬──────────────────────────────────────┘
-                       │ HTTP + Streaming
-                       ▼
-┌─────────────────────────────────────────────────────────────┐
-│              FastAPI Server (Port 8000)                     │
-│           REST API + Server-Sent Events                     │
-└──────────────────────┬──────────────────────────────────────┘
-                       │
-        ┌──────────────┼──────────────┐
-        ▼              ▼              ▼
-   ┌────────┐   ┌──────────┐   ┌──────────┐
-   │Gatekeeper│  │Supervisor│  │Ingestion │
-   │ Node   │  │  Node    │  │  Node    │
-   └────────┘   └──────────┘   └──────────┘
-        │              │              │
-        └──────────────┼──────────────┘
-                       ▼
-           ┌───────────────────────┐
-           │  Synthesis & Critic   │
-           │      Node             │
-           └───────────┬───────────┘
-                       │
-        ┌──────────────┼──────────────┐
-        ▼              ▼              ▼
-   ┌─────────┐  ┌──────────────┐  ┌─────────┐
-   │ LLM API │  │ Vector Store │  │ Search  │
-   │(Google) │  │   (AWS RDS)  │  │ (Tavily)│
-   └─────────┘  └──────────────┘  └─────────┘
-```
-
-### Multi-Agent Workflow
-
-```
-User Query
-    │
-    ▼
-[Gatekeeper] ────► Classification
-    │               (deep_research | general_knowledge | chit_chat | out_of_scope)
-    ▼
-[Supervisor] ────► Search Strategy Generation
-    │               (multi-faceted, domain-aware)
-    │
-    ├─► [Ingestion] ─────────► Web Scraping + RAG Chunking
-    │         │
-    │         └──► Vector Store Indexing
-    │
-    └─► [Synthesis & Critic] ► Report Drafting + Self-Evaluation
-            │
-            ├─► Iteration Check (Complete? → Route)
-            │
-            └─► PDF Report Generation + Reference Compilation
-```
 
 ---
 
@@ -175,7 +118,7 @@ User Query
 
 ### 1. Clone Repository
 ```bash
-git clone <repository-url>
+git clone https://github.com/Krdhirendra/Advanced-Autonomous-Research-agent
 cd A_ARA
 ```
 
