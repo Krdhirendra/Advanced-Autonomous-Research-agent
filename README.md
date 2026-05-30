@@ -45,9 +45,8 @@ AARA is a sophisticated Advanced autonomous research system powered by a **multi
 ## 🏗️ Architecture
 
 ### System Topology
-
+![alt text](image-2.png)
 ```
-![alt text](image-1.png)
 ┌─────────────────────────────────────────────────────────────┐
 │                   Frontend (Vercel)                         │
 │           Reactive Zero-Dependency UI                       │
