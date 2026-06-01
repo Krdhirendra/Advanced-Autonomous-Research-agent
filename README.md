@@ -20,11 +20,11 @@
 - [Setup & Installation](#setup--installation)
 - [Configuration](#configuration)
 - [Project Structure](#project-structure)
-- [API Reference](#api-reference)
-- [Agent Workflow](#agent-workflow)
+<!-- - [API Reference](#api-reference) -->
+<!-- - [Agent Workflow](#agent-workflow)
 - [Development](#development)
 - [Deployment](#deployment)
-- [Contributing](#contributing)
+- [Contributing](#contributing) -->
 - [Support](#support)
 
 ---
@@ -245,7 +245,7 @@ A_ARA/
 ```
 
 ---
-
+<!-- 
 ## <a name="api-reference"></a>🔗 API Reference
 
 ### Base URL
@@ -282,7 +282,7 @@ data: {"type": "complete", "report_url": "/reports/AARA_Report_12345.pdf"}
 | `missing_info` | Incomplete research detected | `{gaps: Array}` |
 | `complete` | Research finished | `{report_url: string}` |
 
----
+--- -->
 
 ## <a name="agent-workflow-details"></a>🔗 Agent Workflow Details
 
@@ -386,7 +386,7 @@ print(f"Current state: {json.dumps(state, indent=2)}")
 ```
 
 ---
-
+<!-- 
 ## <a name="deployment"></a>🔗 Deployment
 
 ### Docker Build & Run
@@ -424,8 +424,8 @@ docker run -p 8000:8000 \
 vercel deploy --prod
 ```
 
----
-
+--- -->
+<!-- 
 ## <a name="contributing"></a>🔗 Contributing
 
 1. **Fork** the repository
@@ -441,6 +441,7 @@ vercel deploy --prod
 - Keep agent functions pure (no side effects)
 - Test API changes with curl or Postman
 
+--- -->
 ---
 
 ## 📝 License
