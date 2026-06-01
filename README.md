@@ -21,10 +21,10 @@
 - [Configuration](#configuration)
 - [Project Structure](#project-structure)
 <!-- - [API Reference](#api-reference) -->
-<!-- - [Agent Workflow](#agent-workflow)
-- [Development](#development)
-- [Deployment](#deployment)
-- [Contributing](#contributing) -->
+- [Agent Workflow](#agent-workflow)
+<!-- - [Development](#development) -->
+<!-- - [Deployment](#deployment) -->
+<!-- - [Contributing](#contributing) -->
 - [Support](#support)
 
 ---
@@ -337,7 +337,7 @@ For each search query:
 5. **Finalize:** Generate PDF report with references
 
 ---
-
+<!-- 
 ## <a name="development"></a>🔗 Development
 
 ### Running in Development Mode
@@ -385,7 +385,7 @@ Check execution state:
 print(f"Current state: {json.dumps(state, indent=2)}")
 ```
 
----
+--- -->
 <!-- 
 ## <a name="deployment"></a>🔗 Deployment
 
