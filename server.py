@@ -33,8 +33,6 @@ app.mount("/reports", StaticFiles(directory="reports"), name="reports")
 class ResearchRequest(BaseModel):
     query: str
 
-
-
 @app.post("/api/research")
 async def generate_research(request: ResearchRequest):
     print(f"Received query from frontend: {request.query}")
@@ -68,9 +66,23 @@ async def generate_research(request: ResearchRequest):
         
         end_time = time.time()
         execution_time = round(end_time - start_time, 2)
+        
         # 2. FINALIZE THE REPORT
         final_report = final_state.get("draft_report", "")
         query_type = final_state.get("query_type", "deep_research")
+
+        # ---
+        if isinstance(final_report, list):
+            # Handle LangChain dictionary list format: [{'text': '...'}]
+            if len(final_report) > 0 and isinstance(final_report[0], dict) and "text" in final_report[0]:
+                final_report = final_report[0]["text"]
+            else:
+                # Fallback: join the list items into a single string
+                final_report = "\n".join(str(item) for item in final_report)
+        elif not isinstance(final_report, str):
+            # Catch-all for any other weird data types
+            final_report = str(final_report)
+        # ---------------------------------------------------------
 
         if query_type in ["chit_chat", "general_knowledge", "out_of_scope"]:
             yield json.dumps({
