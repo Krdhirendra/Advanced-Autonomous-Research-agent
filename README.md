@@ -1,4 +1,4 @@
-# 🤖 AARA: Advanced Autonomous Research Agent
+# AARA: Advanced Autonomous Research Agent
 
 > An intelligent, self-orchestrating multi-agent system that performs deep research by synthesizing web sources, evaluating information quality, and generating comprehensive reports with citations.
 
@@ -20,11 +20,7 @@
 - [Setup & Installation](#setup--installation)
 - [Configuration](#configuration)
 - [Project Structure](#project-structure)
-<!-- - [API Reference](#api-reference) -->
 - [Agent Workflow](#agent-workflow)
-<!-- - [Development](#development) -->
-<!-- - [Deployment](#deployment) -->
-<!-- - [Contributing](#contributing) -->
 - [Support](#support)
 
 ---
@@ -51,32 +47,26 @@ AARA is a sophisticated Advanced autonomous research system powered by a **multi
 
 ## <a name="key-features"></a>🔗 Key Features
 
-### 🧠 Intelligent Agent Orchestration
+### Intelligent Agent Orchestration
 - **Intent Classification:** Gatekeeper routes queries with semantic understanding
 - **Multi-Agent Coordination:** LangGraph-based state machine prevents hallucination
 - **Self-Critique:** Synthesis agent evaluates drafts for completeness and accuracy
 
-### 🔍 Advanced RAG System
+### Advanced RAG System
 - **Hybrid Retrieval:** BM25 (keyword) + Vector Search (semantic) for best-of-both-worlds
 - **Parent-Child Chunking:** Intelligent document segmentation for context preservation
 - **Vector Store Integration:** AWS RDS PostgreSQL with pgvector for scalable embeddings
 
-### 🌐 Web Intelligence
+### Web Intelligence
 - **Smart Web Scraping:** Handles multiple content types (HTML, PDF, Markdown)
 - **Domain Filtering:** Targeted searches within authoritative sources
 - **Failure Recovery:** Gracefully handles dead links and inaccessible content
 
-### 📊 Report Generation
+### Report Generation
 - **Structured Output:** Markdown reports with self-contained structure
 - **PDF Export:** Server-side compilation with proper formatting
 - **Citation Tracking:** Full source attribution and URL references
 - **Iterative Refinement:** Loops back for missing information up to max iterations
-
-### ⚡ Production-Ready
-- **Containerization:** Docker support for consistent deployments
-- **Streaming API:** Server-Sent Events for real-time telemetry
-- **CORS Enabled:** Cross-origin requests for frontend integration
-- **Error Handling:** Graceful degradation and detailed logging
 
 ---
 
@@ -337,116 +327,10 @@ For each search query:
 5. **Finalize:** Generate PDF report with references
 
 ---
-<!-- 
-## <a name="development"></a>🔗 Development
-
-### Running in Development Mode
-
-```bash
-# Terminal 1: Start backend
-uvicorn server:app --reload --host 0.0.0.0 --port 8000
-
-# Terminal 2: Serve frontend (optional local testing)
-python -m http.server 3000 --directory frontend
-```
-
-Visit: `http://localhost:3000`
-
-### Testing the API
-
-```bash
-curl -X POST http://localhost:8000/api/research \
-  -H "Content-Type: application/json" \
-  -d '{"query": "What are vector databases?"}'
-```
-
-### Adding New Agents
-
-1. Create `agents/my_agent.py`
-2. Implement agent function: `def my_agent(state: dict, llm, embed_model) -> dict`
-3. Register in `orchestrator_1.py`:
-   ```python
-   graph.add_node("my_node", partial(my_agent, ...))
-   graph.add_edge(previous_node, "my_node")
-   ```
-
-### Debugging
-
-Enable verbose logging:
-```python
-# In orchestrator_1.py
-import logging
-logging.basicConfig(level=logging.DEBUG)
-```
-
-Check execution state:
-```python
-# Print state at any node
-print(f"Current state: {json.dumps(state, indent=2)}")
-```
-
---- -->
-<!-- 
-## <a name="deployment"></a>🔗 Deployment
-
-### Docker Build & Run
-
-```bash
-# Build image
-docker build -t aara:latest .
-
-# Run container
-docker run -p 8000:8000 \
-  -e GOOGLE_API_KEY=xxx \
-  -e AWS_RDS_URI=xxx \
-  -e TAVILY_API_KEY=xxx \
-  aara:latest
-```
-
-### Production Checklist
-
-- [ ] Rotate all API keys in `.env`
-- [ ] Set `DEBUG=false`
-- [ ] Configure PostgreSQL SSL (`sslmode=require`)
-- [ ] Set up error logging/monitoring
-- [ ] Configure CORS for your domain
-- [ ] Use environment-specific `.env` files
-- [ ] Run behind reverse proxy (nginx/Caddy)
-- [ ] Enable request rate limiting
-
-### Deploying to Vercel (Frontend)
-
-```bash
-# Frontend is pre-deployed at:
-# https://aara-frontend.vercel.app/
-
-# To redeploy after changes:
-vercel deploy --prod
-```
-
---- -->
-<!-- 
-## <a name="contributing"></a>🔗 Contributing
-
-1. **Fork** the repository
-2. **Create** a feature branch: `git checkout -b feature/my-feature`
-3. **Commit** changes: `git commit -m "Add feature: description"`
-4. **Push** to branch: `git push origin feature/my-feature`
-5. **Submit** a Pull Request
-
-### Code Standards
-
-- Follow PEP 8 for Python code
-- Add docstrings to all functions
-- Keep agent functions pure (no side effects)
-- Test API changes with curl or Postman
-
---- -->
----
 
 ## 📝 License
 
-This project is open source. See LICENSE file for details.
+This project is open source.
 
 ---
 
@@ -459,16 +343,6 @@ This project is open source. See LICENSE file for details.
 
 ---
 
-## 🔗 Acknowledgments
-
-Built with:
-- [LangGraph](https://langchain.com/langgraph) - Multi-agent orchestration
-- [FastAPI](https://fastapi.tiangolo.com/) - Modern web framework
-- [PostgreSQL + pgvector](https://pgvector.org/) - Vector database
-- [Google Generative AI](https://ai.google.dev/) - LLM backbone
-- [Tavily API](https://tavily.com/) - Web search
-
----
 
 <div align="center">
 
