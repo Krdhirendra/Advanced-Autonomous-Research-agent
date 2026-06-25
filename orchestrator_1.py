@@ -14,7 +14,7 @@ from langgraph.graph import StateGraph, END
 
 from markdown_pdf import MarkdownPdf, Section
 
-from tools import load_env_variables, FallbackChatGoogleGenerativeAI, get_all_google_api_keys
+from tools import load_env_variables
 from vector_store import RDSVectorStore
 from retriever import Retriever
 
@@ -62,24 +62,10 @@ except Exception as e:
 
 
 # Initializing llm
-try:
-    print(">Initializing the LLM...")
-    google_api_keys = get_all_google_api_keys(".env")
-    if google_api_keys:
-        print(f"✓ Found {len(google_api_keys)} Google API keys in .env. Initializing robust fallback LLM...")
-        llm = FallbackChatGoogleGenerativeAI(
-            api_keys=google_api_keys,
-            model="gemini-3.1-flash-lite",
-            temperature=0
-        )
-    else:
-        print("⚠ No Google API keys found in .env. Falling back to default initialization...")
-        llm = ChatGoogleGenerativeAI(
-            model="gemini-3.1-flash-lite",
-            temperature=0
-        )
-except Exception as e:
-    print(f"Error Loading the LLM\nError: {e}")
+llm = ChatGoogleGenerativeAI(
+    model="gemini-3.1-flash-lite", 
+    temperature=0
+)
 
 # --------------INITIALIZING GLOBAL STATE--------------- #
 
