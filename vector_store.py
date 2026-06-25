@@ -1,23 +1,23 @@
-from langchain_community.vectorstores.pgvector import PGVector
-from langchain_core.documents import Document
+# -------------- IMPORTING LIBRARIES --------------- #
+
 import os
 from dotenv import load_dotenv
+from tools import load_env_variables
+from langchain_core.documents import Document
+from langchain_community.vectorstores.pgvector import PGVector
 
-load_dotenv()
 
+# -------------- VECTOR STORE CLASS --------------- #
 
-
-
+load_env_variables()
 class RDSVectorStore:
 	def __init__(self, collection_name: str = "research_papers"):
 		self.collection_name = collection_name
-		# Read and normalize the connection string from environment
 		self.connection_string = os.getenv("AWS_RDS_URI")
 		self.vectorstore = None
 
 	def initialize_store(self, embedding_manager):
 		"""Connects to AWS RDS pgvector via SQLAlchemy URL.
-
 		Raises a helpful error if the environment variable is missing.
 		"""
 		if not self.connection_string:
@@ -25,8 +25,7 @@ class RDSVectorStore:
 				"AWS_RDS_URI is not set. Add a valid SQLAlchemy URL to your .env, e.g.\n"
 				"AWS_RDS_URI=postgresql+psycopg2://user:pass@host:5432/database"
 			)
-
-
+ 
 		print("Connecting to AWS RDS pgvector...")
 		self.vectorstore = PGVector(
 			connection_string=self.connection_string,
@@ -37,6 +36,7 @@ class RDSVectorStore:
 
 	def add_documents(self, documents: list[Document]):
 		"""Adds LangChain documents directly to the AWS database"""
+		
 		if not self.vectorstore:
 			raise ValueError("Store not initialized. Call initialize_store first.")
 
