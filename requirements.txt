@@ -12,9 +12,9 @@ python-dotenv
 fastapi
 uvicorn
 pydantic
-psycopg2-binary
-pgvector
 rank_bm25
 markdown_pdf
 requests
 sentence-transformers
+chromadb
+langchain-chroma

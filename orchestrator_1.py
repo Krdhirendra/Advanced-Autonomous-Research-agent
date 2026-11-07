@@ -14,8 +14,8 @@ from langgraph.graph import StateGraph, END
 
 from markdown_pdf import MarkdownPdf, Section
 
-from tools import load_env_variables
-from vector_store import RDSVectorStore
+from tools import load_env_variables, get_embedding_model
+from vector_store import ChromaVectorStore
 from retriever import Retriever
 
 from agents.gate_keeper import gatekeeper_agent
@@ -31,11 +31,8 @@ load_env_variables(".env")
 init_time = perf_counter()
 # Loading Embedding Model
 try:
-    print(">Initializing the Embedding model (HuggingFace Inference API)...")
-    embed_model = HuggingFaceEndpointEmbeddings(
-        model="BAAI/bge-small-en-v1.5",
-        huggingfacehub_api_token=os.getenv("HF_TOKEN") or os.getenv("HUGGINGFACEHUB_API_TOKEN")
-    )
+    print(">Initializing the Embedding model (local by default, EMBEDDING_BACKEND=api for HF API)...")
+    embed_model = get_embedding_model()
 except Exception as e:
     print(f"Error Loading the Embedding model\nError: {e}")
 
@@ -43,7 +40,7 @@ except Exception as e:
 # Initializing Vector store
 try:
     print(">Initializing the vector_store")
-    rds_wrapper = RDSVectorStore(collection_name='research_paper')
+    rds_wrapper = ChromaVectorStore(collection_name='research_paper')
     rds_wrapper.initialize_store(embedding_manager=embed_model)
 except Exception as e:
     print(f"Warning: vector_store initialization failed: {e}")

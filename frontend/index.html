@@ -4,128 +4,165 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AARA | Advanced Autonomous Research Agent</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
+<div class="frame">
 
+    <!-- TOP BAR -->
     <header class="topbar">
-        <button class="sidebar-toggle" type="button" aria-label="Open navigation menu" onclick="toggleSidebar()">
-            <span></span>
-            <span></span>
-            <span></span>
-        </button>
-        <div class="logo-area">
-            <i class="fa-solid fa-layer-group logo-icon"></i>
-            <span class="brand-name">AARA:</span>
-            <span class="brand-sub">Advanced Autonomous Research Agent</span>
-        </div>
-        <div class="status-indicator">
-            <span class="pulse-dot"></span> System Online
+        <a class="logo" href="#" aria-label="AARA home">// AARA</a>
+        <nav class="top-nav" aria-label="Workspaces">
+            <button class="nav-btn active" type="button" onclick="switchTab('agent-view', this)">AGENT</button>
+            <button class="nav-btn" type="button" onclick="switchTab('arch-view', this)">ARCHITECTURE</button>
+            <a class="nav-link" href="https://github.com/Krdhirendra/Advanced-Autonomous-Research-agent" target="_blank" rel="noopener noreferrer">SOURCE</a>
+        </nav>
+        <div class="top-right">
+            <span class="status-indicator"><span class="pulse-dot"></span> ONLINE</span>
+            <a class="pill-btn dark small" href="https://www.linkedin.com/in/dhirendra-kumar-23b4b5318/" target="_blank" rel="noopener noreferrer">CONTACT <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
         </div>
     </header>
 
-    <div class="dashboard-grid">
-        
-        <aside class="left-panel">
-            <div class="panel-header">Workspaces</div>
-            <nav class="nav-menu">
-                <button class="nav-btn active" onclick="switchTab('agent-view', this)">
-                    <i class="fa-solid fa-terminal"></i> Agent Interface
-                </button>
-                <button class="nav-btn" onclick="switchTab('arch-view', this)">
-                    <i class="fa-solid fa-project-diagram"></i> Architecture
-                </button>
-            </nav>
-            
-            <div class="panel-header" style="margin-top: 30px;">Agent Status</div>
-            <div class="status-box">
-                <div class="status-title">IDLE</div>
-                <div class="status-desc">Awaiting research directive.</div>
-            </div>
-            <div class="query-box">
-                <div class="query-title">Research Query Example:</div>
-                <div class="query-desc">Evaluate the architectural differences and latency trade-offs between standard Retrieval-Augmented Generation (RAG) and Agentic RAG workflows utilizing state machine routing.</div>
-            </div>
-        </aside>
+    <main>
+        <!-- AGENT VIEW -->
+        <div id="agent-view" class="view-content active-view">
 
-        <main class="center-panel">
-            
-            <div id="agent-view" class="view-content active-view">
-                <div class="query-section panel-card">
-                    <div class="card-header">
-                        <i class="fa-solid fa-bolt"></i> Initialize Directive
+            <section class="hero">
+                <div class="hero-left">
+                    <div class="headline-row">
+                        <svg class="spark" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 1 C12.6 8 16 11.4 23 12 C16 12.6 12.6 16 12 23 C11.4 16 8 12.6 1 12 C8 11.4 11.4 8 12 1Z" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>
+                        <h1>Autonomous research, <br>cited &amp; <br>synthesized.</h1>
                     </div>
-                    <textarea id="query-input" placeholder="Enter research query (e.g., Analyze the thermal mass properties of CSEB vs fired clay bricks...)"></textarea>
-                    <p class="query-helper">Please specify the research parameters for better results.</p>
-                    <p id="research-progress" class="research-progress" style="display: none;">Research in progress and may take some time.... please wait</p>
-                    <div class="action-row">
-                        <button id="start-btn" class="primary-btn" onclick="startResearch()">
-                            <i class="fa-solid fa-play"></i> Execute
-                        </button>
-                    </div>
-                </div>
-                <div class="results-section panel-card" id="results-container" style="display: none; flex-direction: column;">
-                    <div class="card-header" style="justify-content: space-between;">
-                        <div id="results-title"><i class="fa-solid fa-file-pdf"></i> Synthesis Output</div>
-                        <a id="download-btn" href="#" download class="primary-btn" style="display: none; padding: 6px 12px; font-size: 12px; text-decoration: none;">
-                            <i class="fa-solid fa-download"></i> Download PDF
-                        </a>
-                    </div>
-                    
-                    <div id="text-viewer" class="markdown-content" style="display: none; flex-grow: 1;"></div>
+                    <p class="lede">Describe a topic. AARA plans the searches, reads the web, stores what it finds in a vector database and writes a critiqued report with sources.</p>
 
-                    <div id="pdf-viewer-container" class="pdf-container" style="display: none; background-color: #525659;">
-                        <iframe id="pdf-viewer" src="" width="100%" height="100%" style="border: none;"></iframe>
+                    <div class="query-card">
+                        <label for="query-input" class="query-label">RESEARCH DIRECTIVE</label>
+                        <textarea id="query-input" placeholder="e.g. Evaluate the latency trade-offs between standard RAG and agentic RAG with state-machine routing..."></textarea>
+                        <p class="query-helper">Be specific about the topic for a better result.</p>
+                        <p id="research-progress" class="research-progress" style="display: none;">Research in progress and may take some time.... please wait</p>
+                        <div class="action-row">
+                            <button id="start-btn" class="pill-btn dark" onclick="startResearch()">EXECUTE <i class="fa-solid fa-arrow-right"></i></button>
+                            <button class="ghost-btn" type="button" onclick="useExample()">
+                                <span class="dot-play"><i class="fa-solid fa-play"></i></span> TRY AN EXAMPLE
+                            </button>
+                        </div>
                     </div>
+
+                    <!-- <p class="note"><span class="red-star">*</span> Reports are generated live &mdash; nothing is canned.</p> -->
                 </div>
 
-                
-            </div>
-
-            <div id="arch-view" class="view-content" style="display: none;">
-                <div class="panel-card" style="height: 100%;">
-                    <div class="card-header">
-                        <i class="fa-solid fa-network-wired"></i> System Architecture
-                    </div>
-                    <div class="diagram">
-                        <picture class="diagram-container">
-                            <img src="mermaid-diagram-2026-05-30-154759.png" alt="LangGraph topology diagram">
-                        </picture>
-                    </div>
+                <div class="hero-right" aria-hidden="true">
+                    <svg viewBox="0 0 400 540" preserveAspectRatio="xMidYMid slice" class="art">
+                        <defs>
+                            <pattern id="grain" width="6" height="6" patternUnits="userSpaceOnUse">
+                                <circle cx="1" cy="1" r="0.9" fill="#fff" opacity="0.55"/>
+                                <circle cx="4" cy="4" r="0.7" fill="#fff" opacity="0.35"/>
+                            </pattern>
+                        </defs>
+                        <!-- pale blue blob -->
+                        <path d="M300 90 L330 60 L350 92 L392 85 L378 130 L400 160 L360 190 L340 250 L300 230 L270 180 Z" fill="#D3E3E8"/>
+                        <!-- red wave bottom-left -->
+                        <path d="M0 300 C60 320 90 380 70 450 C60 490 120 520 220 540 L0 540 Z" fill="#F0432F"/>
+                        <!-- orbit -->
+                        <circle cx="130" cy="110" r="150" fill="none" stroke="#111" stroke-width="1.4"/>
+                        <!-- connecting frame -->
+                        <path d="M130 30 L230 100 L150 190 L50 120 Z" fill="none" stroke="#111" stroke-width="1.4"/>
+                        <!-- black cubes -->
+                        <g fill="#111">
+                            <rect x="108" y="6" width="44" height="44" rx="9" transform="rotate(20 130 28)"/>
+                            <rect x="208" y="78" width="44" height="44" rx="9" transform="rotate(20 230 100)"/>
+                            <rect x="128" y="168" width="44" height="44" rx="9" transform="rotate(20 150 190)"/>
+                            <rect x="28" y="98" width="44" height="44" rx="9" transform="rotate(20 50 120)"/>
+                        </g>
+                        <!-- red triangle -->
+                        <path d="M95 100 L175 105 L138 165 Z" fill="#F0432F"/>
+                        <path d="M95 100 L175 105 L138 165 Z" fill="url(#grain)"/>
+                        <!-- blue pill toggle -->
+                        <g transform="rotate(14 200 300)">
+                            <rect x="40" y="255" width="300" height="100" rx="50" fill="#5B9BB8"/>
+                            <rect x="40" y="255" width="300" height="100" rx="50" fill="url(#grain)" opacity="0.5"/>
+                            <circle cx="283" cy="305" r="32" fill="#fff"/>
+                        </g>
+                        <!-- black cursor -->
+                        <path d="M175 520 L215 400 L300 520 L260 520 L215 580 L190 520 Z" fill="#111" transform="rotate(8 230 480) translate(0 -40)"/>
+                        <!-- gear dots -->
+                        <g fill="#D3E3E8">
+                            <circle cx="340" cy="440" r="22"/><circle cx="385" cy="420" r="18"/><circle cx="350" cy="495" r="20"/><circle cx="395" cy="485" r="16"/>
+                        </g>
+                    </svg>
                 </div>
-            </div>
+            </section>
 
-        </main>
-        <aside class="right-panel panel-card">
-            <div class="card-header">
-                <i class="fa-solid fa-code"></i> Live Console
-                <i class="fa-solid fa-ellipsis-vertical" style="float: right; color: var(--text-muted); cursor: pointer;"></i>
-            </div>
-            <div class="terminal-feed" id="terminal-output">
-                <div class="log-line sys-log">[AARA_CORE] LangGraph environment initialized.</div>
-                <div class="log-line sys-log">[AARA_CORE] Vector store connected.</div>
-                <div class="log-line">[IDLE] Listening for inputs...</div>
-            </div>
-        </aside>
+            <!-- STAT STRIP -->
+            <section class="strip">
+                <div class="strip-cell status-cell">
+                    <div class="strip-big status-title">IDLE</div>
+                    <div class="strip-sub status-desc">Awaiting research directive.</div>
+                </div>
+                <div class="strip-cell">
+                    <div class="strip-big">4</div>
+                    <div class="strip-sub">cooperating agents</div>
+                </div>
+                <div class="strip-cell">
+                    <div class="strip-big">Hybrid</div>
+                    <div class="strip-sub">BM25 + vector retrieval</div>
+                </div>
+                <div class="strip-cell logos">
+                    <span><i class="fa-solid fa-diagram-project"></i> LangGraph</span>
+                    <span><i class="fa-solid fa-database"></i> ChromaDB</span>
+                    <span><i class="fa-solid fa-bolt"></i> FastAPI</span>
+                </div>
+            </section>
 
-    </div>
-    <footer class="topbar">
-        <div class="logo-area">
-            <!-- <i class="fa-solid fa-layer-group logo-icon"></i> -->
-            <!-- <span class="brand-name"></span> -->
-            <span class="brand-sub">© Created by Dhirendra</span>
+            <!-- RESULTS -->
+            <section class="block" id="results-container" style="display: none;">
+                <div class="block-head">
+                    <div id="results-title"><i class="fa-solid fa-file-pdf"></i> SYNTHESIS OUTPUT</div>
+                    <a id="download-btn" href="#" download class="pill-btn dark small" style="display: none;">
+                        <i class="fa-solid fa-download"></i> DOWNLOAD PDF
+                    </a>
+                </div>
+                <div id="text-viewer" class="markdown-content" style="display: none;"></div>
+                <div id="pdf-viewer-container" class="pdf-container" style="display: none;">
+                    <iframe id="pdf-viewer" src="" title="Generated report" width="100%" height="100%" style="border: none;"></iframe>
+                </div>
+            </section>
+
+            <!-- CONSOLE -->
+            <section class="block">
+                <div class="block-head"><div><i class="fa-solid fa-terminal"></i> LIVE CONSOLE</div></div>
+                <div class="terminal-feed" id="terminal-output">
+                    <div class="log-line sys-log">[AARA_CORE] LangGraph environment initialized.</div>
+                    <div class="log-line sys-log">[AARA_CORE] Vector store connected.</div>
+                    <div class="log-line">[IDLE] Listening for inputs...</div>
+                </div>
+            </section>
         </div>
-        <div class="social-links">
-            <a class="social-link" href="https://github.com/Krdhirendra/Advanced-Autonomous-Research-agent" target="_blank" rel="noopener noreferrer" title="GitHub">
-                <i class="fa-brands fa-github"></i>
-            </a>
-            <a class="social-link" href="https://www.linkedin.com/in/dhirendra-kumar-23b4b5318/" target="_blank" rel="noopener noreferrer" title="LinkedIn">
-                <i class="fa-brands fa-linkedin"></i>
-            </a>
+
+        <!-- ARCHITECTURE VIEW -->
+        <div id="arch-view" class="view-content" style="display: none;">
+            <section class="block">
+                <div class="block-head"><div><i class="fa-solid fa-diagram-project"></i> SYSTEM ARCHITECTURE</div></div>
+                <div class="diagram">
+                    <img src="mermaid-diagram-2026-05-30-154759.png" alt="LangGraph topology diagram">
+                </div>
+            </section>
         </div>
+    </main>
+
+    <footer class="footer">
+        <span>&copy; Created by Dhirendra</span>
+        <span class="social-links">
+            <a class="social-link" href="https://github.com/Krdhirendra/Advanced-Autonomous-Research-agent" target="_blank" rel="noopener noreferrer" title="GitHub"><i class="fa-brands fa-github"></i></a>
+            <a class="social-link" href="https://www.linkedin.com/in/dhirendra-kumar-23b4b5318/" target="_blank" rel="noopener noreferrer" title="LinkedIn"><i class="fa-brands fa-linkedin"></i></a>
+        </span>
     </footer>
+</div>
 
-    <script src="script.js"></script>
+<script src="script.js"></script>
 </body>
 </html>

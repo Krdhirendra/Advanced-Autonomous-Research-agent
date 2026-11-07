@@ -29,7 +29,7 @@ def synthesis_and_critique_agent(state: dict, llm, retriever:Retriever):
     
     # PHASE 1: RETRIEVAL & CONTEXT FORMATTING
     retrival_strt = time.perf_counter()
-    print("> Pulling best context from AWS RDS...")
+    print("> Pulling best context from ChromaDB...")
 
     if retriever is None:
         raise RuntimeError("Retriever not initialized. Ensure orchestrator creates and initializes Retriever before running synthesis agent.")

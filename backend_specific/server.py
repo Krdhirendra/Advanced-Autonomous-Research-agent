@@ -1,3 +1,4 @@
+import sys
 import uuid
 import json
 import time
@@ -16,11 +17,18 @@ from markdown_pdf import MarkdownPdf, Section
 
 import os
 from langchain_huggingface import HuggingFaceEndpointEmbeddings
-from tools import load_env_variables
+from tools import load_env_variables, get_embedding_model
 from langchain_google_genai import ChatGoogleGenerativeAI
-from vector_store import RDSVectorStore
+from vector_store import ChromaVectorStore
 from retriever import Retriever
 from orchestrator_2 import create_orchestrator
+
+# Startup logs use unicode symbols; avoid crashes on Windows cp1252 consoles
+for _stream in (sys.stdout, sys.stderr):
+    try:
+        _stream.reconfigure(encoding="utf-8")
+    except Exception:
+        pass
 
 # Load environment variables at module load time
 load_env_variables(".env")
@@ -46,11 +54,8 @@ async def lifespan(app: FastAPI):
     
     # Initialize Embedding Model
     try:
-        print("> Initializing the Embedding model (HuggingFace Inference API)...")
-        embed_model = HuggingFaceEndpointEmbeddings(
-            model="BAAI/bge-small-en-v1.5",
-            huggingfacehub_api_token=os.getenv("HF_TOKEN") or os.getenv("HUGGINGFACEHUB_API_TOKEN")
-        )
+        print("> Initializing the Embedding model (local by default, EMBEDDING_BACKEND=api for HF API)...")
+        embed_model = get_embedding_model()
         print("✓ Embedding model initialized")
     except Exception as e:
         print(f"✗ Error Loading the Embedding model: {e}")
@@ -59,7 +64,7 @@ async def lifespan(app: FastAPI):
     # Initialize Vector Store
     try:
         print(">Initializing the vector_store...")
-        rds_wrapper = RDSVectorStore(collection_name='research_paper')
+        rds_wrapper = ChromaVectorStore(collection_name='research_paper')
         rds_wrapper.initialize_store(embedding_manager=embed_model)
         print("✓ Vector store initialized")
     except Exception as e:

@@ -88,7 +88,7 @@ def web_and_ingestion_agent(state: dict, embed_model, rds_wrapper, retriever=Non
     # Embed the chunks
     embd_strt = perf_counter()
 
-    print("> Starting hosted HuggingFace API vector embedding...")
+    print("> Starting vector embedding...")
     texts_to_embed = [doc.page_content for doc in chunkss]
     embeddings = embed_model.embed_documents(texts_to_embed)
     print(f"Successfully generated {len(embeddings)} vectors!")
@@ -97,7 +97,7 @@ def web_and_ingestion_agent(state: dict, embed_model, rds_wrapper, retriever=Non
     print(f"Embedding Completed in {embd_end - embd_strt}")
 
     # Upload the Embeddings
-    print("> Starting AWS RDS parallel upload...")
+    print("> Starting ChromaDB upload...")
 
     # Bundle our data for clean batching
     all_texts = texts_to_embed
@@ -116,19 +116,19 @@ def web_and_ingestion_agent(state: dict, embed_model, rds_wrapper, retriever=Non
         })
 
 
-    # Define the worker function that actually talks to AWS
+    # Define the worker function that actually talks to the vector store
     def upload_batch_to_aws(batch_data):
-        rds_wrapper.vectorstore.add_embeddings(
+        rds_wrapper.add_embeddings(
             texts=batch_data["texts"],
             embeddings=batch_data["embeddings"],
             metadatas=batch_data["metadatas"]
         )
 
-    print(f"> Firing {len(batches)} simultaneous upload requests to AWS...")
-    # Open 10 concurrent network pipelines to AWS and blast the data across all of them at once
+    print(f"> Firing {len(batches)} simultaneous upload requests to ChromaDB...")
+    # Open 10 concurrent network pipelines to the store and blast the data across all of them at once
     upld_strt = perf_counter()
     with concurrent.futures.ThreadPoolExecutor(max_workers=10) as executor:
-        executor.map(upload_batch_to_aws, batches)
+        list(executor.map(upload_batch_to_aws, batches))
     upld_end = perf_counter()
     print(f"> Uploading completed in {upld_end-upld_strt}")
 

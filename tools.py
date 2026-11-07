@@ -120,3 +120,20 @@ def extract_html(html_content):
     text = re.sub(r'\s+', ' ', text) # Collapses multiple tabs, spaces, and \n into a single space
     
     return text.strip()
+
+
+def get_embedding_model(model_name: str = "BAAI/bge-small-en-v1.5"):
+    """Returns the embedding model.
+
+    Runs the model locally by default (no API credits needed). Set
+    EMBEDDING_BACKEND=api to use the hosted HuggingFace Inference API instead.
+    Both produce the same vectors for the same model.
+    """
+    if os.getenv("EMBEDDING_BACKEND", "local").lower() == "api":
+        from langchain_huggingface import HuggingFaceEndpointEmbeddings
+        return HuggingFaceEndpointEmbeddings(
+            model=model_name,
+            huggingfacehub_api_token=os.getenv("HF_TOKEN") or os.getenv("HUGGINGFACEHUB_API_TOKEN"),
+        )
+    from langchain_huggingface import HuggingFaceEmbeddings
+    return HuggingFaceEmbeddings(model_name=model_name, encode_kwargs={"normalize_embeddings": True})

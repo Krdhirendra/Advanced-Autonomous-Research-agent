@@ -7,3 +7,5 @@ orchestrator.py
 /archive
 /__pycache__
 /agents/__pycache__
+/data
+__pycache__/
