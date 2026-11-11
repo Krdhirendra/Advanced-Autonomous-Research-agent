@@ -43,6 +43,8 @@ function addLog(message, type = 'normal') {
     terminal.scrollTop = terminal.scrollHeight;
 }
 
+let currentPdfUrl = null;
+
 function handleEvent(data, els) {
     if (data.type === "log") {
         addLog(data.message, "system");
@@ -61,10 +63,14 @@ function handleEvent(data, els) {
             addLog(`[SYSTEM] Bypass successful. Processed in ${data.time}s.`, "system");
         } else if (data.response_type === "pdf") {
             els.resultsTitle.innerHTML = '<i class="fa-solid fa-file-pdf"></i> SYNTHESIS OUTPUT';
-            const fullPdfUrl = BACKEND_HOST + data.pdf_url;
+            // Report arrives in the response itself; preview/download via a local Blob URL.
+            if (currentPdfUrl) URL.revokeObjectURL(currentPdfUrl);
+            const bytes = Uint8Array.from(atob(data.pdf_base64), c => c.charCodeAt(0));
+            currentPdfUrl = URL.createObjectURL(new Blob([bytes], { type: 'application/pdf' }));
 
-            els.pdfViewer.src = fullPdfUrl;
-            els.downloadBtn.href = fullPdfUrl;
+            els.pdfViewer.src = currentPdfUrl;
+            els.downloadBtn.href = currentPdfUrl;
+            els.downloadBtn.download = data.filename || 'AARA_Report.pdf';
 
             els.textViewer.style.display = 'none';
             els.pdfContainer.style.display = 'block';

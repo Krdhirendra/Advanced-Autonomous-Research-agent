@@ -206,7 +206,6 @@ EMBEDDING_DEVICE = "cuda"   # Use GPU if available
 ```
 A_ARA/
 ├── server.py                    # FastAPI application & endpoint handlers
-├── orchestrator_1.py            # LangGraph state machine & agent routing
 ├── RAG.py                       # Document chunking (parent-child strategy)
 ├── retriever.py                 # Hybrid retrieval (semantic + BM25)
 ├── vector_store.py              # PostgreSQL pgvector wrapper

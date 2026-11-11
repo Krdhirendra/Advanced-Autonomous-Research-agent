@@ -1,5 +1,6 @@
 import sys
-import uuid
+import base64
+import tempfile
 import json
 import time
 from time import perf_counter
@@ -8,7 +9,6 @@ from pathlib import Path
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.staticfiles import StaticFiles
 from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
 import uvicorn
@@ -132,13 +132,15 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Create a dedicated folder for reports
-base_dir = Path.cwd()
-report_folder = base_dir / "reports"
-report_folder.mkdir(parents=True, exist_ok=True)
-
-# Mount the folder so the frontend can access the PDFs via URL
-app.mount("/reports", StaticFiles(directory="reports"), name="reports")
+# Reports are NOT stored in the project directory: each PDF is rendered in the
+# system temp folder, streamed to the browser as base64, and deleted immediately.
+def render_pdf_bytes(markdown_text: str) -> bytes:
+    with tempfile.TemporaryDirectory() as tmp:
+        tmp_path = Path(tmp) / "report.pdf"
+        pdf = MarkdownPdf(toc_level=2)
+        pdf.add_section(Section(markdown_text))
+        pdf.save(str(tmp_path))
+        return tmp_path.read_bytes()
 
 
 # -------------- REQUEST MODELS --------------- #
@@ -212,17 +214,13 @@ async def generate_research(request: ResearchRequest):
                     "time": execution_time
                 }) + "\n"
             else:
-                filename = f"AARA_Report_{uuid.uuid4().hex[:6]}.pdf"
-                file_path = report_folder / filename
+                pdf_bytes = render_pdf_bytes(final_report)
 
-                pdf = MarkdownPdf(toc_level=2)
-                pdf.add_section(Section(final_report))
-                pdf.save(str(file_path))
-                
                 yield json.dumps({
                     "type": "result", 
                     "response_type": "pdf", 
-                    "pdf_url": f"/reports/{filename}",
+                    "pdf_base64": base64.b64encode(pdf_bytes).decode("ascii"),
+                    "filename": "AARA_Report.pdf",
                     "time": execution_time
                 }) + "\n"
         
